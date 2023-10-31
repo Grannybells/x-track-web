@@ -1,16 +1,71 @@
 import React, { useEffect, useState } from "react";
+
+
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../authentication/config";
-import { logoutUser } from "../authentication/auth";
+import { db } from "../authentication/config";
+
+import { doc, setDoc, collection, addDoc } from "firebase/firestore";
 
 const Home = () => {
+
+    const [showModal, setShowModal] = useState(false)
+    const [error, setError] = useState(null);
+
+    const [productName, setProductName] = useState('')
+    const [productQuantity, setProductQuantity] = useState('')
+    const [productManufactured, setProductManufactured] = useState('')
+    const [productExpiration, setProductExpiration] = useState('')
+
+    const handleSubmitData = async (e) => {
+        e.preventDefault()
+
+        if (productName.trim() === '' || productQuantity.trim() === '' || productManufactured.trim() === '' || productExpiration.trim() === '') {
+            setError('Please enter both email and password.');
+            return;
+        }
+        try {
+            const docRef = await addDoc(collection(db, "cities"), {
+                productName: productName,
+                productQuantity: productQuantity,
+                productManufactured: productManufactured,
+                productExpiration: productExpiration,
+            });
+            console.log(docRef.id, "Data is submitted successfully")
+            setShowModal(false)
+        } catch (error) {
+            console.log(error, "Data is not submitted")
+        }
+    }
 
     return (
         <div className="h-[calc(100vh-4.75rem)] bg-gradient-to-b from-white via-white to-blue-500 px-20">
             <div className="flex flex-row items-center justify-between py-5">
-                <button className="px-5 py-2 bg-[#1F487E]/[.30] hover:bg-[#1F487E]/[.80] rounded-md font-bold uppercase">Add item</button>
                 <h1>Page no. here</h1>
+                <button className="px-5 py-2 bg-[#1F487E]/[.30] hover:bg-[#1F487E]/[.80] rounded-md font-bold uppercase" onClick={() => setShowModal(true)}>Add item</button>
             </div>
+            {showModal ? (
+                <>
+                    <div className="backdrop-blur-sm justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+                        <div className="relative w-1/2 h-auto bg-[#1F487E]/[.80] rounded-3xl p-10">
+                            <form onSubmit={handleSubmitData}>
+                                <div className="flex flex-col gap-5">
+                                    <h1 className=" text-5xl uppercase font-bold text-center mb-5">Add item</h1>
+                                    <input onChange={(e) => setProductName(e.target.value)} className="w-full h-10 p-6 rounded-lg " placeholder="Name of product" />
+                                    <input onChange={(e) => setProductQuantity(e.target.value)} className="w-full h-10 p-6 rounded-lg " placeholder="Quantity of product" />
+                                    <input onChange={(e) => setProductManufactured(e.target.value)} className="w-full h-10 p-6 rounded-lg " placeholder="Manufacturing date of product" />
+                                    <input onChange={(e) => setProductExpiration(e.target.value)} className="w-full h-10 p-6 rounded-lg " placeholder="Expiration date of product" />
+                                    {error && <div className="text-center text-red-500">{error}</div>}
+                                    <div className="flex flex-row self-center gap-5">
+                                        <button className="px-10 py-2 bg-green-500 rounded font-bold text-xl hover:bg-green-600" onClick={() => setShowModal(false)} >Close</button>
+                                        <button className="px-10 py-2 bg-red-500 rounded font-bold text-xl hover:bg-red-600" type="submit">Add</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </>
+            ) : null}
+
             <div className="flex flex-col border-[2px] border-black rounded-3xl">
                 <div className="h-12 bg-[#1F487E]/[.30] flex flex-row px-10 items-center justify-between font-semibold rounded-t-3xl">
                     <span>No.</span>
