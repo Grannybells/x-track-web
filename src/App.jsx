@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import NavBar from './components/NavBar'
 import About from './pages/About'
 import Feature from './pages/Feature'
+import Profile from './pages/Profile'
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
         <Route path='/home' element={<Home />} />
         <Route path='/about' element={<About />} />
         <Route path='/feature' element={<Feature />} />
+        <Route path='/profile' element={<Profile />} />
       </Routes>
     </div>
   )

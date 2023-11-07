@@ -18,7 +18,7 @@ const NavBar = () => {
             setUser(firebaseUser);
             setIsLoggedIn(true);
             setEmail(firebaseUser.email || "");
-            console.log("  user log in and ui:" + firebaseUser.uid);
+            console.log('user logged in' + firebaseUser.uid);
         } else {
             setUser(null);
             setIsLoggedIn(false);
@@ -38,8 +38,6 @@ const NavBar = () => {
 
     return (
         <div className="flex flex-row justify-between items-center mt-5 mx-20 px-20 h-14 rounded-2xl bg-[#1F487E]/[.30]">
-
-
             {isLoggedIn ?
                 <Link to="/home" className='flex flex-row uppercase font-bold text-2xl'>
                     <h1 className="text-[#AA1818]">X</h1>
@@ -56,7 +54,7 @@ const NavBar = () => {
                 {isLoggedIn ? <Link to='/home' className="hover:text-[#1F487E]/[.80]">Home</Link> : null}
                 <Link className="hover:text-[#1F487E]/[.80]" to='/about'>About</Link>
                 <Link className="hover:text-[#1F487E]/[.80]" to='/feature'>Feature</Link>
-                {isLoggedIn ? <span className="hover:text-[#1F487E]/[.80]">{email}</span> : null}
+                {isLoggedIn ? <Link className="hover:text-[#1F487E]/[.80]" to='/profile'>{email}</Link> : null}
                 {isLoggedIn ? <button onClick={handleSubmitLogout} className="hover:text-[#1F487E]/[.80]" >Logout</button> : <Link className="hover:text-[#1F487E]/[.80]" to='/login'>Login</Link>}
             </div>
         </div>

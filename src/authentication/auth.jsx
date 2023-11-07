@@ -32,9 +32,8 @@ export const logoutUser = async () => {
 };
 
 export const observeAuthState = (auth, onAuthChange) => {
-
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
             onAuthChange(user);
         });
 
