@@ -1,14 +1,24 @@
-import React, { useEffect, useState } from "react";
+// Import React and useState from the "react" library.
+import React, { useState } from "react";
 
+// Import the "DatePicker" component from the "react-datepicker" library.
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css"; // Import the default styles
+
+// Import the default styles for "react-datepicker."
+import "react-datepicker/dist/react-datepicker.css";
+
+// Import the default styles for "tailwindcss."
 import "tailwindcss/tailwind.css";
 
+// Import the "db" and "auth" objects from the specified location in your project.
 import { db, auth } from "../authentication/config";
+
+// Import the "collection" and "addDoc" functions from the "firebase/firestore" library.
 import { collection, addDoc } from "firebase/firestore";
 
 const AddForm = () => {
 
+    // Define a list of product options
     const optionsProduct = [
         { value: 'Rebisco Crackers', label: 'Rebisco Crackers' },
         { value: 'Gardenia Loaf bread', label: 'Gardenia Loaf bread' },
@@ -16,6 +26,7 @@ const AddForm = () => {
         { value: 'Cream O Cookies', label: 'Cream O Cookies' },
     ]
 
+    // Define a list of expiration options
     const optionsExpiration = [
         { value: 'Top', label: 'Top' },
         { value: 'Bottom', label: 'Bottom' },
@@ -23,22 +34,26 @@ const AddForm = () => {
         { value: 'Right', label: 'Right' },
     ]
 
-    const [showModal, setShowModal] = useState(false)
-    const [error, setError] = useState(null);
+    // Initialize state variables
+    const [showModal, setShowModal] = useState(false); // Controls whether to show a modal dialog
+    const [productName, setProductName] = useState(''); // State for the product name
+    const [productQuantity, setProductQuantity] = useState(''); // State for the product quantity
+    const [productStickerLoc, setProductStickerLoc] = useState(''); // State for the sticker location
+    const [productExpirationDate, setProductExpirationDate] = useState(new Date()); // State for the expiration date
+    const [error, setError] = useState(null); // Holds any error messages
 
-    const [productName, setProductName] = useState('')
-    const [productQuantity, setProductQuantity] = useState('')
-    const [productStickerLoc, setProductStickerLoc] = useState('')
-    const [productExpirationDate, setProductExpirationDate] = useState(new Date());
-
+    // Handle form submission
     const handleSubmitData = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
+        // Validate input fields
         if (productName.trim() === '' || productQuantity.trim() === '' || productStickerLoc.trim() === '') {
             setError('Please input all fields');
             return;
         }
+
         try {
+            // Add data to the Firestore database
             const docRef = await addDoc(collection(db, "product"), {
                 createdBy: auth.currentUser.uid,
                 productName: productName,
@@ -46,12 +61,19 @@ const AddForm = () => {
                 productStickerLoc: productStickerLoc,
                 productExpirationDate: productExpirationDate,
             });
-            console.log(docRef.id, "Data is submitted successfully")
-            setShowModal(false)
+            // console.log(docRef.id, "Data is submitted successfully");
+
+            // Reset form fields and hide the modal
+            setShowModal(false);
+            setProductName('');
+            setProductQuantity('');
+            setProductStickerLoc('');
+            setProductExpirationDate(new Date());
         } catch (error) {
-            console.log(error, "Data is not submitted")
+            // console.log(error, "Data is not submitted");
         }
     }
+
     return (
         <div>
             <button className="px-5 py-2 bg-[#1F487E]/[.30] hover:bg-[#1F487E]/[.80] rounded-md font-bold uppercase" onClick={() => setShowModal(true)}>Add item</button>

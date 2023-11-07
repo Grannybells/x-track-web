@@ -1,15 +1,27 @@
+// Import React, useEffect, and useState from the "react" library.
 import React, { useEffect, useState } from "react";
+
+// Import Firestore-related functions from the "firebase/firestore" library.
 import { onSnapshot, collection, deleteDoc, doc, updateDoc, query, where } from "firebase/firestore";
 
+// Import the "db" and "auth" objects from the specified location in your project.
 import { db, auth } from "../authentication/config";
+
+// Import the "observeAuthState" function from the authentication module.
 import { observeAuthState } from "../authentication/auth";
 
+// Import the "DatePicker" component from the "react-datepicker" library.
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css"; // Import the default styles
+
+// Import the default styles for "react-datepicker."
+import "react-datepicker/dist/react-datepicker.css";
+
+// Import the default styles for "tailwindcss."
 import "tailwindcss/tailwind.css";
 
 const TableData = () => {
 
+    // Define a list of product options
     const optionsProduct = [
         { value: 'Rebisco Crackers', label: 'Rebisco Crackers' },
         { value: 'Gardenia Loaf bread', label: 'Gardenia Loaf bread' },
@@ -17,6 +29,7 @@ const TableData = () => {
         { value: 'Cream O Cookies', label: 'Cream O Cookies' },
     ]
 
+    // Define a list of expiration options
     const optionsExpiration = [
         { value: 'Top', label: 'Top' },
         { value: 'Bottom', label: 'Bottom' },
@@ -24,18 +37,18 @@ const TableData = () => {
         { value: 'Right', label: 'Right' },
     ]
 
-    const [showDelete, setShowDelete] = useState(false)
-    const [showUpdate, setShowUpdate] = useState(false)
-    const [products, setProducts] = useState([]);
+    // Initialize state variables
+    const [showDelete, setShowDelete] = useState(false); // Controls whether to show delete modal
+    const [showUpdate, setShowUpdate] = useState(false); // Controls whether to show update modal
+    const [products, setProducts] = useState([]); // Holds the user-specific product list
+    const [productName, setProductName] = useState(''); // State for product name input
+    const [productQuantity, setProductQuantity] = useState(''); // State for product quantity input
+    const [productStickerLoc, setProductStickerLoc] = useState(''); // State for sticker location input
+    const [productExpirationDate, setProductExpirationDate] = useState(new Date()); // State for expiration date input
+    const [error, setError] = useState(null); // Holds any error messages
+    const [user, setUser] = useState(null); // Holds user information
 
-    const [productName, setProductName] = useState('')
-    const [productQuantity, setProductQuantity] = useState('')
-    const [productStickerLoc, setProductStickerLoc] = useState('')
-    const [productExpirationDate, setProductExpirationDate] = useState(new Date());
-    const [error, setError] = useState(null);
-
-    const [user, setUser] = useState(null);
-
+    // Handle the authentication change
     const handleAuthChange = (firebaseUser) => {
         if (firebaseUser) {
             setUser(firebaseUser);
@@ -44,8 +57,10 @@ const TableData = () => {
         }
     };
 
+    // Use the 'observeAuthState' function to observe the authentication state
     observeAuthState(auth, handleAuthChange);
 
+    // Fetch user-specific products and update the state when the user is authenticated
     useEffect(() => {
         if (user) {
             const productCollectionRef = collection(db, 'product');
@@ -72,6 +87,7 @@ const TableData = () => {
         }
     }, [user]);
 
+    // Function to determine the product status based on expiration date
     function getProductStatus(expirationDate) {
         const today = new Date();
         const expDate = expirationDate.toDate();
@@ -83,17 +99,19 @@ const TableData = () => {
         }
     }
 
+    // Function to delete a product
     async function deleteProduct(productId) {
         try {
             const productRef = doc(db, 'product', productId);
             await deleteDoc(productRef);
-            setShowDelete(false)
+            setShowDelete(false);
             console.log('Product deleted successfully');
         } catch (error) {
             console.error('Error deleting product:', error);
         }
     }
 
+    // Function to update a product
     async function updateProduct(productId) {
         if (productName.trim() === '' || productQuantity.trim() === '' || productStickerLoc.trim() === '') {
             setError('Please input all fields');
@@ -107,19 +125,19 @@ const TableData = () => {
                 productStickerLoc: productStickerLoc,
                 productExpirationDate: productExpirationDate,
             });
-            console.log(productRef.id, "Data is updated")
-            setShowUpdate(false)
+            console.log('Product Updated Successfully');
+            setShowUpdate(false);
             setProductName('');
             setProductQuantity('');
             setProductStickerLoc('');
             setProductExpirationDate(new Date());
         } catch (error) {
-            console.error('Error updating data', error);
+            console.error('Error Updating product:', error);
         }
     }
 
     return (
-        <div className="w-full border-2 border-gray-900 rounded-xl bg-gray-100">
+        <div className="w-full border-2 border-gray-900 rounded-xl bg-gray-100/50 h-5/6">
             <div className="flex flex-row items-center justify-center h-16 bg-[#1F487E]/[.20] px-5">
                 <span className="w-1/6 text-center font-semibold text-lg">Name</span>
                 <span className="w-1/6 text-center font-semibold text-lg">Quantity</span>
@@ -128,29 +146,30 @@ const TableData = () => {
                 <span className="w-1/6 text-center font-semibold text-lg">Status</span>
                 <span className="w-1/6 text-center font-semibold text-lg">Action</span>
             </div>
-            {products.map((product) => (
-                <div key={product.id} className="flex flex-row items-center justify-center mx-5 my-3 bg-white border-[1.5px] border-black/60 rounded-lg h-10">
-                    <span className="w-1/6 text-center">{product.productName}</span>
-                    <span className="w-1/6 text-center">{product.productQuantity}</span>
-                    <span className="w-1/6 text-center">{product.productStickerLoc}</span>
-                    <span className="w-1/6 text-center">{product.productExpirationDate.toDate().toDateString()}</span>
-                    <span className="w-1/6 text-center">{product.status}</span>
-                    <div className="w-1/6 flex flex-row gap-5 items-center justify-center">
-                        <button onClick={() => setShowUpdate(product.id)}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                            </svg>
-                        </button>
-                        <button onClick={() => setShowDelete(product.id)}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                            </svg>
+            <div className="h-5/6 overflow-y-auto mt-5">
+                {products.map((product) => (
+                    <div key={product.id} className=" flex flex-row items-center justify-center mx-5 my-3 bg-gray-200 border-[1.5px] border-black/60 rounded-lg h-10">
+                        <span className="w-1/6 text-center">{product.productName}</span>
+                        <span className="w-1/6 text-center">{product.productQuantity}</span>
+                        <span className="w-1/6 text-center">{product.productStickerLoc}</span>
+                        <span className="w-1/6 text-center">{product.productExpirationDate.toDate().toDateString()}</span>
+                        <span className="w-1/6 text-center">{product.status}</span>
+                        <div className="w-1/6 flex flex-row gap-5 items-center justify-center">
+                            <button onClick={() => setShowUpdate(product.id)}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                </svg>
+                            </button>
+                            <button onClick={() => setShowDelete(product.id)}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                </svg>
 
-                        </button>
+                            </button>
+                        </div>
                     </div>
-                </div>
-            ))}
-
+                ))}
+            </div>
             {showUpdate ? (
                 <>
                     <div className="backdrop-blur-sm justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">

@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from "react";
+// Import the React library for creating components.
+import React from "react";
 
-
-import { Link, useNavigate } from "react-router-dom";
-import { db } from "../authentication/config";
-
-import { doc, setDoc, collection, addDoc } from "firebase/firestore";
+// Import the "AddForm" component from the specified location.
 import AddForm from "../components/AddForm";
+
+// Import the "TableData" component from the specified location.
 import TableData from "../components/TableData";
 
 const Home = () => {
     return (
         <div className="h-[calc(100vh-4.75rem)] bg-gradient-to-b from-white via-white to-blue-500 px-20">
-            <div className="flex flex-row items-center justify-between py-5">
-                <h1>Page no. here</h1>
+            <div className="flex flex-row items-center justify-start py-5">
                 <AddForm />
             </div>
             <TableData />

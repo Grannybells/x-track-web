@@ -1,44 +1,59 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+// Import authentication-related functions from the "firebase/auth" library.
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut,
+} from "firebase/auth";
+
+// Import the "auth" object from the specified location in your project.
 import { auth } from "./config";
 
-import React, { useState, useEffect } from "react";
+// Import React and useEffect from the "react" library.
+import React, { useEffect } from "react";
 
+
+// Function to register a new user with email and password
 export const registerUser = async (email, password) => {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        return user; // Optionally return the user object
+        return user;
     } catch (error) {
-        throw error; // Rethrow the error to handle it in the calling code
+        throw error;
     }
 };
 
+// Function to log in a user with email and password
 export const loginUser = async (email, password) => {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        return user; // Optionally return the user object
+        return user;
     } catch (error) {
-        throw error; // Rethrow the error to handle it in the calling code
+        throw error;
     }
 };
 
+// Function to log out the currently logged-in user
 export const logoutUser = async () => {
     try {
         await signOut(auth);
     }
     catch {
+        // Handle any potential errors (you may want to log them)
     }
 };
 
+// Function to observe the authentication state changes
 export const observeAuthState = (auth, onAuthChange) => {
     useEffect(() => {
+        // Set up a listener for authentication state changes
         const unsubscribe = auth.onAuthStateChanged((user) => {
             onAuthChange(user);
         });
-
+        // Clean up the listener when the component unmounts
         return () => unsubscribe();
     }, []);
 };
-
 

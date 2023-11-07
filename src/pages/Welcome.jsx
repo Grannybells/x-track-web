@@ -1,6 +1,12 @@
+// Import the React library for creating components.
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import rightimage from '../assets/Right-banner.png'
+
+// Import specific elements from the "react-router-dom" library.
+import { Link } from "react-router-dom";
+
+// Import the "rightimage" from the "assets" folder. Make sure the path is correct.
+import rightimage from '../assets/Right-banner.png';
+
 const Welcome = () => {
     return (
         <div className="h-[calc(100vh-4.75rem)] bg-gradient-to-b from-white via-white to-blue-500 flex flex-row px-20 items-center">

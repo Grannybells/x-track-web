@@ -1,28 +1,43 @@
+// Import React and useState from the "react" library.
 import React, { useState } from "react";
+
+// Import specific elements from the "react-router-dom" library.
 import { Link, useNavigate } from "react-router-dom";
+
+// Import the "loginUser" function from the specified location.
 import { loginUser } from "../authentication/auth";
-import loginImage from '../assets/Left-login.png'
+
+// Import the "loginImage" from the "assets" folder. Make sure the path is correct.
+import loginImage from '../assets/Left-login.png';
+
 const Login = () => {
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    const [error, setError] = useState(null);
-
+    // Import the 'useNavigate' hook to enable programmatic navigation
     const navigate = useNavigate();
 
-    const handleSubmitLogin = async (e) => {
-        e.preventDefault()
+    // Initialize state variables for email, password, and error messages
+    const [email, setEmail] = useState(''); // State for email input
+    const [password, setPassword] = useState(''); // State for password input
+    const [error, setError] = useState(null); // Holds any error messages
 
+    // Handle the form submission for user login
+    const handleSubmitLogin = async (e) => {
+        e.preventDefault();
+
+        // Validate input fields
         if (email.trim() === '' || password.trim() === '') {
             setError('Please enter both email and password.');
             return;
         }
 
         try {
+            // Attempt to log in the user with the provided email and password
             const user = await loginUser(email, password);
+
+            // If login is successful, navigate to the '/home' route
             navigate('/home');
         } catch (error) {
+            // Handle login errors, typically due to invalid credentials
             setError('Invalid email or password. Please try again.');
         }
     }

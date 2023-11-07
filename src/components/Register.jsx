@@ -1,33 +1,45 @@
+// Import React and useState from the "react" library.
 import React, { useState } from "react";
+
+// Import specific elements from the "react-router-dom" library.
 import { Link, useNavigate } from "react-router-dom";
+
+// Import the "registerUser" function from the specified location.
 import { registerUser } from "../authentication/auth";
 
-import loginImage from '../assets/Left-login.png'
+// Import the "loginImage" from the "assets" folder. Make sure the path is correct.
+import loginImage from '../assets/Left-login.png';
 
 const Register = () => {
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [username, setUsername] = useState('');
-    const [company, setCompany] = useState('');
+    // Import the 'useNavigate' hook to enable programmatic navigation
+    const navigate = useNavigate();
 
-    const [error, setError] = useState(null);
+    // Initialize state variables for email, password, and error messages
+    const [email, setEmail] = useState(''); // State for email input
+    const [password, setPassword] = useState(''); // State for password input
+    const [error, setError] = useState(null); // Holds any error messages
 
-    const navigate = useNavigate()
-
+    // Handle the form submission for user registration
     const handleSubmitRegister = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
+
+        // Validate input fields
         if (email.trim() === '' || password.trim() === '') {
             setError('Please enter both email and password.');
             return;
         }
 
         try {
+            // Attempt to register the user with the provided email and password
             const user = await registerUser(email, password);
-            navigate('/login')
-            alert('user registered!')
+
+            // If registration is successful, navigate to the '/login' route and display an alert
+            navigate('/login');
+            alert('User registered!');
         } catch (error) {
-            setError('Email is already registerd. Please try again.');
+            // Handle registration errors, typically due to an already registered email
+            setError('Email is already registered. Please try again.');
         }
     }
 

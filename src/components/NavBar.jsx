@@ -1,39 +1,53 @@
-import React, { useState, useEffect } from "react";
+// Import React, useState, and useEffect from the "react" library.
+import React, { useState } from "react";
+
+// Import specific elements from the "react-router-dom" library.
 import { Link, useNavigate } from "react-router-dom";
 
+// Import the "observeAuthState" and "logoutUser" functions from the authentication module.
 import { observeAuthState, logoutUser } from "../authentication/auth";
+
+// Import the "auth" object from the specified location in your project.
 import { auth } from "../authentication/config";
 
 const NavBar = () => {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [user, setUser] = useState(null);
-    const [email, setEmail] = useState("");
+    // Import the 'useNavigate' hook to enable programmatic navigation
+    const navigate = useNavigate();
 
-    const navigate = useNavigate()
+    // Initialize state variables for user authentication and related information
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // Indicates whether a user is logged in
+    const [user, setUser] = useState(null); // Holds the user object if logged in
+    const [email, setEmail] = useState(""); // Holds the user's email
 
     // Handle the authentication change
     const handleAuthChange = (firebaseUser) => {
         if (firebaseUser) {
+            // If a user is authenticated, update the state variables
             setUser(firebaseUser);
             setIsLoggedIn(true);
-            setEmail(firebaseUser.email || "");
-            console.log('user logged in' + firebaseUser.uid);
+            setEmail(firebaseUser.email || ""); // Store the user's email (if available)
+            console.log('User logIn Successfully');
         } else {
+            // If the user is not authenticated, reset the state variables
             setUser(null);
             setIsLoggedIn(false);
-            console.log('user log out');
+            console.log('User logOut Successfully');
         }
     };
 
-    // Use the observeAuthState function to observe the authentication state
+    // Use the 'observeAuthState' function to observe the authentication state
     observeAuthState(auth, handleAuthChange);
 
-    // Handle the logout State of user
+    // Handle user logout
     const handleSubmitLogout = async (e) => {
-        e.preventDefault()
-        await logoutUser()
-        navigate('/')
+        e.preventDefault();
+
+        // Call the 'logoutUser' function to log the user out
+        await logoutUser();
+
+        // Navigate to the home page or any other desired route after logout
+        navigate('/');
     }
 
     return (
