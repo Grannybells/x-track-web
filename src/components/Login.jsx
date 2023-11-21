@@ -35,7 +35,7 @@ const Login = () => {
             const user = await loginUser(email, password);
 
             // If login is successful, navigate to the '/home' route
-            navigate('/home');
+            navigate('/x-track-web/home');
         } catch (error) {
             // Handle login errors, typically due to invalid credentials
             setError('Invalid email or password. Please try again.');
@@ -54,7 +54,7 @@ const Login = () => {
                     <input className="w-80 p-3 rounded-lg" type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
                     <input className="w-80 p-3 rounded-lg" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
                     <button className="w-80 p-3 rounded-lg bg-[#1F487E] hover:bg-[#1F487E]/[.50] font-bold" type="submit">LOGIN</button>
-                    <span>Dont have an account? <Link to='/register' className="font-bold">Register here</Link></span>
+                    <span>Dont have an account? <Link to='/x-track-web/register' className="font-bold">Register here</Link></span>
                     {error && <div className=" text-red-500">{error}</div>}
                 </div>
             </div>

@@ -47,29 +47,29 @@ const NavBar = () => {
         await logoutUser();
 
         // Navigate to the home page or any other desired route after logout
-        navigate('/');
+        navigate('/x-track-web/');
     }
 
     return (
         <div className="flex flex-row justify-between items-center mt-5 mx-20 px-20 h-14 rounded-2xl bg-[#1F487E]/[.30]">
             {isLoggedIn ?
-                <Link to="/home" className='flex flex-row uppercase font-bold text-2xl'>
+                <Link to="/x-track-web/home" className='flex flex-row uppercase font-bold text-2xl'>
                     <h1 className="text-[#AA1818]">X</h1>
                     <h1>-Track</h1>
                 </Link> :
 
-                <Link to="/" className='flex flex-row uppercase font-bold text-2xl'>
+                <Link to="/x-track-web/" className='flex flex-row uppercase font-bold text-2xl'>
                     <h1 className="text-[#AA1818]">X</h1>
                     <h1>-Track</h1>
                 </Link>
             }
 
             <div className="flex flex-row gap-10 font-bold text-lg ">
-                {isLoggedIn ? <Link to='/home' className="hover:text-[#1F487E]/[.80]">Home</Link> : null}
-                <Link className="hover:text-[#1F487E]/[.80]" to='/about'>About</Link>
-                <Link className="hover:text-[#1F487E]/[.80]" to='/feature'>Feature</Link>
-                {isLoggedIn ? <Link className="hover:text-[#1F487E]/[.80]" to='/profile'>{email}</Link> : null}
-                {isLoggedIn ? <button onClick={handleSubmitLogout} className="hover:text-[#1F487E]/[.80]" >Logout</button> : <Link className="hover:text-[#1F487E]/[.80]" to='/login'>Login</Link>}
+                {isLoggedIn ? <Link to='/x-track-web/home' className="hover:text-[#1F487E]/[.80]">Home</Link> : null}
+                <Link className="hover:text-[#1F487E]/[.80]" to='/x-track-web/about'>About</Link>
+                <Link className="hover:text-[#1F487E]/[.80]" to='/x-track-web/feature'>Feature</Link>
+                {isLoggedIn ? <Link className="hover:text-[#1F487E]/[.80]" to='/x-track-web/profile'>{email}</Link> : null}
+                {isLoggedIn ? <button onClick={handleSubmitLogout} className="hover:text-[#1F487E]/[.80]" >Logout</button> : <Link className="hover:text-[#1F487E]/[.80]" to='/x-track-web/login'>Login</Link>}
             </div>
         </div>
     );
