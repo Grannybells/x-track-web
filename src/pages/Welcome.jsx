@@ -14,7 +14,7 @@ const Welcome = () => {
                 <h1 className="font-bold text-6xl">Never let the bread expire again, track it before it’s too late!</h1>
                 <div className="flex flex-row">
                     <Link to='/x-track-web/login' className="bg-[#1F487E]/[.30] px-10 py-2 rounded-xl text-xl font-bold">Track now!</Link>
-                    <Link to='/x-track-web/About' className="text-xl px-10 py-2 flex flex-row">Learn more</Link>
+                    <Link to='/x-track-web/about' className="text-xl px-10 py-2 flex flex-row">Learn more</Link>
                 </div>
             </div>
             <div className="w-2/5 self-center">
