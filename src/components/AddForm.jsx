@@ -77,6 +77,7 @@ const AddForm = () => {
     return (
         <div>
             <button className="px-5 py-2 bg-[#1F487E]/[.30] hover:bg-[#1F487E]/[.80] rounded-md font-bold uppercase" onClick={() => setShowModal(true)}>Add item</button>
+
             {showModal ? (
                 <>
                     <div className="backdrop-blur-sm justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
