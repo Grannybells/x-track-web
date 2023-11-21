@@ -18,7 +18,7 @@ function App() {
       <NavBar />
       <Routes>
         {/* Define routes for your application */}
-        <Route path='/x-track-web/' element={<Welcome />} />
+        <Route path='/' element={<Welcome />} />
         <Route path='/x-track-web/login' element={<Login />} />
         <Route path='/x-track-web/register' element={<Register />} />
         <Route path='/x-track-web/home' element={<Home />} />
