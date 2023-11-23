@@ -10,6 +10,7 @@ import NavBar from './components/NavBar';
 import About from './pages/About';
 import Feature from './pages/Feature';
 import Profile from './pages/Profile';
+import Charts from './pages/Charts';
 
 function App() {
   return (
@@ -18,13 +19,14 @@ function App() {
       <NavBar />
       <Routes>
         {/* Define routes for your application */}
-        <Route path='/' element={<Welcome />} />
+        <Route path='/x-track-web/' element={<Welcome />} />
         <Route path='/x-track-web/login' element={<Login />} />
         <Route path='/x-track-web/register' element={<Register />} />
         <Route path='/x-track-web/home' element={<Home />} />
         <Route path='/x-track-web/about' element={<About />} />
         <Route path='/x-track-web/feature' element={<Feature />} />
         <Route path='/x-track-web/profile' element={<Profile />} />
+        <Route path='/x-track-web/chart' element={<Charts />} />
       </Routes>
     </div>
   )

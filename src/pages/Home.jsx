@@ -9,7 +9,7 @@ import TableData from "../components/TableData";
 
 const Home = () => {
     return (
-        <div className="h-[calc(100vh-4.75rem)] bg-gradient-to-b from-white via-white to-blue-500 px-20">
+        <div className="h-[calc(100vh-4.75rem)] bg-gradient-to-b from-white via-white to-blue-500 px-5 lg:px-20">
             <div className="flex flex-row items-center justify-start py-5">
                 <AddForm />
             </div>

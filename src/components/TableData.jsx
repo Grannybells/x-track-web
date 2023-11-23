@@ -77,8 +77,20 @@ const TableData = () => {
                     };
                     updatedProducts.push(product);
                 });
+
+                // Sort products by status: Expired > Expiring Soon > Fresh
+                updatedProducts.sort((a, b) => {
+                    if (a.status.props.children === 'Expired') return -1;
+                    if (b.status.props.children === 'Expired') return 1;
+                    if (a.status.props.children === 'Expiring Soon') return -1;
+                    if (b.status.props.children === 'Expiring Soon') return 1;
+                    return 0;
+                });
+
                 setProducts(updatedProducts);
+                console.log(updatedProducts)
             });
+
             return () => {
                 unsubscribe();
             };
@@ -92,8 +104,18 @@ const TableData = () => {
         const today = new Date();
         const expDate = expirationDate.toDate();
 
+        // Calculate the date 3 days before expiration
+        const notificationDate = new Date(expDate);
+        notificationDate.setDate(expDate.getDate() - 3);
+
         if (expDate <= today) {
             return <span className="text-red-500">Expired</span>;
+        } else if (today >= notificationDate) {
+            return (
+                <span className="text-orange-500 truncate text-center">
+                    Expiring Soon
+                </span>
+            );
         } else {
             return <span className="text-green-500">Fresh</span>;
         }
@@ -138,21 +160,21 @@ const TableData = () => {
 
     return (
         <div className="w-full border-2 border-gray-900 rounded-xl bg-gray-100/50 h-5/6">
-            <div className="flex flex-row items-center justify-center h-16 bg-[#1F487E]/[.20] px-5">
+            <div className="flex flex-row items-center justify-between md:justify-center h-16 bg-[#1F487E]/[.20] px-5">
                 <span className="w-1/6 text-center font-semibold text-lg">Name</span>
                 <span className="w-1/6 text-center font-semibold text-lg">Quantity</span>
-                <span className="w-1/6 text-center font-semibold text-lg">Expiration Location</span>
-                <span className="w-1/6 text-center font-semibold text-lg">Expiration Date</span>
+                <span className="w-1/6 text-center font-semibold text-lg hidden md:block">Expiration Location</span>
+                <span className="w-1/6 text-center font-semibold text-lg hidden md:block">Expiration Date</span>
                 <span className="w-1/6 text-center font-semibold text-lg">Status</span>
                 <span className="w-1/6 text-center font-semibold text-lg">Action</span>
             </div>
             <div className="h-5/6 overflow-y-auto mt-5">
                 {products.map((product) => (
-                    <div key={product.id} className=" flex flex-row items-center justify-center mx-5 my-3 bg-gray-200 border-[1.5px] border-black/60 rounded-lg h-10">
-                        <span className="w-1/6 text-center">{product.productName}</span>
+                    <div key={product.id} className=" flex flex-row items-center justify-between md:justify-center px-5 md:px-0 mx-5 my-3 bg-gray-200 border-[1.5px] border-black/60 rounded-lg h-10">
+                        <span className="w-1/6 text-center truncate">{product.productName}</span>
                         <span className="w-1/6 text-center">{product.productQuantity}</span>
-                        <span className="w-1/6 text-center">{product.productStickerLoc}</span>
-                        <span className="w-1/6 text-center">{product.productExpirationDate.toDate().toDateString()}</span>
+                        <span className="w-1/6 text-center hidden md:block">{product.productStickerLoc}</span>
+                        <span className="w-1/6 text-center hidden md:block">{product.productExpirationDate.toDate().toDateString()}</span>
                         <span className="w-1/6 text-center">{product.status}</span>
                         <div className="w-1/6 flex flex-row gap-5 items-center justify-center">
                             <button onClick={() => setShowUpdate(product.id)}>
