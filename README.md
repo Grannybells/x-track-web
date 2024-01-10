@@ -1,4 +1,4 @@
-# X Track: Master Your Inventory with Precision
+# X Track
 ## React + Vite
 
 Take control of your inventory with this meticulously crafted web application, built on a robust foundation of modern technologies:
