@@ -1,8 +1,12 @@
-# React + Vite
+#X-Track
+## React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Manage inventory effortlessly with web-based system. Track expiration dates, customize them for freshness, update stock levels with ease, and remove expired items efficiently—all through user-friendly features like inputs and dropdown menus.
 
-Currently, two official plugins are available:
+## Libraries and plugins used
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Firebase
+- React-datepicker
+- React-router-dom
+- Recharts
+- Tailwind CSS
