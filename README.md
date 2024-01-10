@@ -3,7 +3,7 @@
 
 Take control of your inventory with this meticulously crafted web application, built on a robust foundation of modern technologies:
 
-### Features:
+### Features
 
 - Effortless Inventory Tracking: Stay on top of expiration dates, stock levels, and item details with ease.
 - Customizable Freshness: Define personalized freshness periods to ensure optimal product quality.
@@ -11,7 +11,7 @@ Take control of your inventory with this meticulously crafted web application, b
 - Visual Insights: Gain valuable perspectives into inventory trends and patterns with informative charts and graphs powered by Recharts.
 - User-Friendly Interface: Navigate the application with ease thanks to a clean and intuitive design built with Tailwind CSS.
 
-### Libraries and Plugins:
+### Libraries and Plugins
 
 - Firebase
 - React-datepicker
